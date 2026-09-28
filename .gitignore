@@ -1,0 +1,5 @@
+# Keep original handwritten notebook scans out of the public repository.
+**/reference/
+
+# These contact sheets are generated from the notebook scans.
+/archive/contact-sheets/
