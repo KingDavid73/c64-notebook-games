@@ -12,3 +12,16 @@ button{border:1px solid #e2b36b;background:#24162c;color:#f4d49a;padding:7px 12p
 button:hover,button:focus-visible{background:#49304b;color:#fff;outline:2px solid #8ebbe6;outline-offset:2px}
 a{color:#e2b36b}
 .help{margin:8px auto 12px;max-width:760px;line-height:1.6;font-size:clamp(11px,1.7vw,14px)}
+.notebook-story{max-width:760px;margin:28px auto 22px;padding:22px 24px;border:1px solid #956b49;background:#24162c;color:#d8bda7;text-align:left;line-height:1.75}
+.notebook-story h2{margin:0 0 16px;color:#e2b36b;font:inherit;font-weight:700;letter-spacing:.08em}
+.notebook-story p{margin:0 0 1em;font-size:inherit;line-height:inherit}
+.notebook-story p:last-child{margin-bottom:0}
+.notebook-story details{margin-top:18px;border-top:1px solid #684b42;padding-top:14px}
+.notebook-story summary{color:#e2b36b;cursor:pointer}
+.notebook-story .story-continuation{margin-top:16px}
+.notebook-story .story-continuation p:last-child{margin-bottom:0}
+.box-art{width:min(100%,390px);margin:30px auto 26px;border:8px ridge #956b49;background:#150d20;box-shadow:0 0 0 3px #09060b,0 14px 36px #0008}
+.box-art img{display:block;width:100%;height:auto;aspect-ratio:2/3;object-fit:cover}
+.box-art figcaption{display:grid;gap:5px;padding:12px 10px 14px;color:#e5b65f;font-size:clamp(10px,2vw,13px);letter-spacing:.08em}
+.box-art figcaption strong{font-size:1.5em}
+.box-art figcaption span{color:#d8bda7;font-size:.75em}

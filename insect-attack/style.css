@@ -12,3 +12,12 @@ body.modern-text #modern-text { display: block; }
 button { border: 1px solid #e2b36b; background: #24162c; color: #f4d49a; padding: 7px 12px; font: inherit; cursor: pointer; }
 button:hover, button:focus-visible { background: #49304b; color: #fff; outline: 2px solid #8ebbe6; outline-offset: 2px; }
 p { margin: 14px 0 0; font-size: clamp(11px, 2vw, 15px); }
+.notebook-story { max-width: 760px; margin: 30px auto 22px; padding: 22px 24px; border: 1px solid #9382da; background: #211b63; color: #e3e8ff; text-align: left; line-height: 1.75; }
+.notebook-story h2 { margin: 0 0 16px; color: #d0dc71; font: inherit; font-weight: 700; letter-spacing: .08em; }
+.notebook-story p { margin: 0 0 1em; font-size: inherit; line-height: inherit; }
+.notebook-story p:last-child { margin-bottom: 0; }
+.box-art { width: min(100%, 390px); margin: 30px auto 26px; border: 8px ridge #d0dc71; background: #211b63; box-shadow: 0 0 0 3px #15102a, 0 14px 36px #0008; }
+.box-art img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; }
+.box-art figcaption { display: grid; gap: 5px; padding: 12px 10px 14px; color: #d0dc71; font-size: clamp(10px, 2vw, 13px); letter-spacing: .08em; }
+.box-art figcaption strong { font-size: 1.5em; }
+.box-art figcaption span { color: #e3e8ff; font-size: .75em; }

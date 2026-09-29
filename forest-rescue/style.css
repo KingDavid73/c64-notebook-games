@@ -12,3 +12,8 @@ button{border:1px solid #d7e67b;background:#1d3824;color:#eaf4d6;padding:7px 12p
 button:hover,button:focus-visible{background:#375b38;outline:2px solid #e5dc55;outline-offset:2px}
 p{line-height:1.6}
 a{color:#d7e67b}
+.box-art{width:min(100%,390px);margin:30px auto 26px;border:8px ridge #76a95a;background:#14251b;box-shadow:0 0 0 3px #080e0b,0 14px 36px #0008}
+.box-art img{display:block;width:100%;height:auto;aspect-ratio:2/3;object-fit:cover}
+.box-art figcaption{display:grid;gap:5px;padding:12px 10px 14px;color:#e5dc55;font-size:clamp(10px,2vw,13px);letter-spacing:.08em}
+.box-art figcaption strong{font-size:1.5em}
+.box-art figcaption span{color:#e1e8d2;font-size:.75em}
