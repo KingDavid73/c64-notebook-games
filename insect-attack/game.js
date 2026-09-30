@@ -13,9 +13,21 @@ let state = "title", level = 1, score = 0, waveScore = 0, waveTarget = 0, high =
 let heli, bugs, farms, particles, spawnClock, scroll, waveNotice = 0, paused = false, muted = false, elapsed = 0;
 let audio = null, spraySoundClock = 0, musicClock = 0, musicStep = 0;
 const textModeButton=document.querySelector("#text-mode");
+const graphicsModeButton=document.querySelector("#graphics-mode"),remasterSprites=new RemasterSprites("assets/remaster-sprites-v2.png"),remasterBackgrounds=new RemasterBackgrounds("assets/remaster-backgrounds.png");
+let remasterGraphics=false;
+function toggleGraphicsMode(){remasterGraphics=!remasterGraphics;graphicsModeButton.textContent=remasterGraphics?"UPDATED GRAPHICS · G":"C64 GRAPHICS · G";graphicsModeButton.setAttribute("aria-pressed",String(remasterGraphics))}
+graphicsModeButton.addEventListener("click",toggleGraphicsMode);
+addEventListener("message",event=>{if(event.data?.type!=="c64-toggle")return;if(event.data.mode==="text")toggleTextMode();if(event.data.mode==="graphics")toggleGraphicsMode()});
 function updateTextModeButton(){textModeButton.textContent=modernText?"MODERN TEXT · T":"C64 TEXT · T";textModeButton.setAttribute("aria-pressed",String(modernText));document.body.classList.toggle("modern-text",modernText)}
 function toggleTextMode(){modernText=!modernText;updateTextModeButton()}
 textModeButton.addEventListener("click",toggleTextMode);updateTextModeButton();
+const touchMain=document.querySelector("#touch-main"),touchMute=document.querySelector("#touch-mute"),touchPause=document.querySelector("#touch-pause");
+document.querySelectorAll("[data-hold-key]").forEach(button=>{const key=button.dataset.holdKey,release=()=>{keys.delete(key);button.classList.remove("is-pressed")};button.addEventListener("pointerdown",e=>{e.preventDefault();wakeAudio();keys.add(key);button.classList.add("is-pressed");button.setPointerCapture(e.pointerId)});["pointerup","pointercancel","lostpointercapture"].forEach(name=>button.addEventListener(name,release))});
+touchMain.addEventListener("click",()=>{wakeAudio();if(state==="play")paused=!paused;else if(state==="instructions")state="title";else start(1)});
+document.querySelector("#touch-instructions").addEventListener("click",()=>{wakeAudio();if(state==="title")state="instructions"});
+touchPause.addEventListener("click",()=>{if(state==="play")paused=!paused});
+function toggleMute(){muted=!muted;touchMute.textContent=`SOUND ${muted?"OFF":"ON"}`}
+touchMute.addEventListener("click",toggleMute);
 
 // SID-inspired placeholders: simple pulse/saw/triangle/noise voices with short
 // envelopes. They are synthesized live, so the game needs no sampled assets.
@@ -62,8 +74,9 @@ addEventListener("keydown", e => {
   if (["arrowup","arrowdown","arrowleft","arrowright"," "].includes(k)) e.preventDefault();
   keys.add(k);
   if (k === "p" && state === "play") paused = !paused;
-  if (k === "m") muted = !muted;
+  if (k === "m") toggleMute();
   if (k === "t") { toggleTextMode(); return; }
+  if (k === "g") { toggleGraphicsMode(); return; }
   if (state === "title") { if (k === "i") state = "instructions"; else if (/^[1-9]$/.test(k)) start(+k); else if (k === "enter" || k === " ") start(1); }
   else if (state === "instructions" && (k === "enter" || k === " " || k === "escape")) state = "title";
   else if (state === "gameover" && (k === "enter" || k === " ")) state = "title";
@@ -159,6 +172,7 @@ function crash(force=false){
 function text(t,x,y,color=C.white,align="left",size=8){const target=modernText?modernCtx:ctx;target.fillStyle=color;target.font=modernText?`${size}px "Segoe UI", Arial, sans-serif`:`${size}px monospace`;target.textAlign=align;target.fillText(t,x,y);}
 function px(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),w,h);}
 function helicopter(x,y){
+  if(remasterGraphics&&remasterSprites.draw(ctx,0,x-3,y-5,36,23))return;
   // The notebook sprite faces right, toward the incoming insects and spray.
   ctx.save();ctx.translate(2*x+24,0);ctx.scale(-1,1);
   px(x,y+5,20,7,C.yellow);px(x+4,y+2,12,4,C.yellow);px(x+7,y,8,2,C.white);px(x+19,y+7,9,3,C.orange);px(x+27,y+3,2,8,C.orange);
@@ -189,6 +203,7 @@ const insectSprites=[
 ];
 function insect(b){
   const x=Math.round(b.x), y=Math.round(b.y);
+  if(remasterGraphics&&remasterSprites.draw(ctx,[1,2,3,4,5][b.type],x-2,y-5,19,15))return;
   // Small, fixed pixel silhouettes: wings sit behind the body, and each bug
   // uses one simple outline plus a species-specific color pattern. All face left.
   const sprite=insectSprites[b.type]||insectSprites[4];
@@ -201,6 +216,7 @@ function insect(b){
   if(sprite.rows[3]&&sprite.rows[3].includes(">")) px(x+sprite.rows[3].indexOf(">"),y+1,1,1,C.black);
 }
 function farm(f){
+  if(remasterGraphics&&remasterSprites.draw(ctx,6,f.x-12,f.y-13,25,22))return;
   const x=f.x,y=f.y;px(x-7,y,15,7,C.red);px(x-5,y-5,11,5,C.white);px(x-2,y-8,5,3,C.red);px(x+2,y+2,3,5,C.black);px(x-11,y+7,22,2,C.green);
 }
 function field(){
@@ -209,11 +225,11 @@ function field(){
 }
 
 function drawPlay(){
-  ctx.fillStyle=C.sky;ctx.fillRect(0,0,320,200);px(0,0,320,18,C.bg);text(`SCORE ${String(score).padStart(6,"0")}`,5,12);text(`LEVEL ${String(level).padStart(2,"0")}`,132,12);text(`HIGH ${String(high).padStart(6,"0")}`,315,12,C.white,"right");
+  if(!remasterGraphics||!remasterBackgrounds.draw(ctx,Math.floor((level-1)/3)%4,0,0,320,200)){ctx.fillStyle=C.sky;ctx.fillRect(0,0,320,200)}px(0,0,320,18,C.bg);text(`SCORE ${String(score).padStart(6,"0")}`,5,12);text(`LEVEL ${String(level).padStart(2,"0")}`,132,12);text(`HIGH ${String(high).padStart(6,"0")}`,315,12,C.white,"right");
   px(4,19,76,12,C.black);px(5,20,74,10,C.bg);text(heli.sprayFuel>.03?"SPRAY":"EMPTY",7,27,heli.sprayFuel>.03?C.white:C.red,"left",6);
   px(33,21,44,8,C.black);px(34,22,42,6,C.gray);if(heli.sprayFuel>0)px(34,22,Math.max(1,Math.ceil(42*heli.sprayFuel/SPRAY_CAPACITY)),6,C.yellow);
   text(`COPTERS ${lives}`,5,197,C.white);text(`FARMS ${farms.filter(f=>f.alive).length}`,315,197,C.white,"right");
-  for(let x=0;x<384;x+=48){const cloudX=((x-scroll*.18)%384+384)%384;px(cloudX,34,24,3,C.white);px(cloudX+7,31,10,3,C.white);}
+  if(!remasterGraphics)for(let x=0;x<384;x+=48){const cloudX=((x-scroll*.18)%384+384)%384;px(cloudX,34,24,3,C.white);px(cloudX+7,31,10,3,C.white);}
   field();farms.filter(f=>f.alive).forEach(farm);bugs.forEach(b=>{if(b.diving)px(b.x+6,b.y-6,2,1,C.red);insect(b);});
   if(heli.inv<=0||Math.floor(heli.inv*8)%2===0)helicopter(heli.x,heli.y);
   if(heli.spray>0){for(let i=0;i<16;i++){const sx=heli.x+29+i*4,sy=heli.y+5+Math.sin(i*7+elapsed*30)*8;px(sx,sy,1,1,i%3?C.white:C.cyan);}}
@@ -235,4 +251,4 @@ function instructions(){
 }
 function endScreen(){ctx.fillStyle=C.bg;ctx.fillRect(0,0,320,200);text("YOUR COPTERS ARE GONE",160,61,C.red,"center",14);text(`WAVE ${String(level).padStart(2,"0")} REACHED`,160,87,C.yellow,"center",10);text(`SCORE ${String(score).padStart(6,"0")}`,160,111,C.white,"center",12);text("PRESS ENTER",160,145,C.lime,"center");}
 
-let last=performance.now();function frame(now){const dt=Math.min(.033,(now-last)/1000);last=now;elapsed+=state==="play"?0:dt;update(dt);if(modernText)modernCtx.clearRect(0,0,320,200);if(state==="title")title();else if(state==="instructions")instructions();else if(state==="play")drawPlay();else endScreen();requestAnimationFrame(frame);}requestAnimationFrame(frame);
+let last=performance.now();function frame(now){const dt=Math.min(.033,(now-last)/1000);last=now;elapsed+=state==="play"?0:dt;update(dt);document.body.dataset.gameState=state;touchMain.textContent=state==="title"?"START WAVE":state==="instructions"?"BACK TO TITLE":"PLAY AGAIN";touchMain.hidden=state==="play";touchPause.textContent=paused?"RESUME":"PAUSE";touchPause.hidden=state!=="play";touchPause.disabled=state!=="play";document.querySelector("#touch-instructions").hidden=state!=="title";if(modernText)modernCtx.clearRect(0,0,320,200);if(state==="title")title();else if(state==="instructions")instructions();else if(state==="play")drawPlay();else endScreen();requestAnimationFrame(frame);}requestAnimationFrame(frame);

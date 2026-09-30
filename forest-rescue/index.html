@@ -1,1 +1,37 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Forest Run</title><link rel="stylesheet" href="style.css"></head><body><main><div class="game-screen"><canvas id="game" width="320" height="200" aria-label="Forest Run game"></canvas><canvas id="modern-text" width="1280" height="800" aria-hidden="true"></canvas></div><div class="display-controls"><button id="text-mode" type="button" aria-pressed="false">C64 TEXT · T</button></div><p>Move: arrows / WASD · Collect all eight treasures · Avoid the bear · M mute · T text mode</p><figure class="box-art" aria-label="Forest Run game cover art"><img src="assets/forest-run-box-art.png" alt="A young forest adventurer races for a treasure chest while a bear pursues through a sunlit woodland." width="1024" height="1536" loading="lazy" decoding="async"><figcaption><strong>FOREST RUN</strong><span>WOODLAND TREASURE & DANGER · 1980s-INSPIRED COVER ART</span></figcaption></figure><a href="../index.html">← Collection</a></main><script src="game.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Forest Run</title>
+  <script>if (new URLSearchParams(location.search).has("embed")) document.documentElement.classList.add("embedded");</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <div class="game-screen">
+      <canvas id="game" width="320" height="200" aria-label="Forest Run game"></canvas>
+      <canvas id="modern-text" width="1280" height="800" aria-hidden="true"></canvas>
+    </div>
+    <section class="touch-controls" aria-label="Touchscreen game controls">
+      <div class="touch-pad" role="group" aria-label="Move the adventurer">
+        <span></span><button type="button" data-hold-key="arrowup" aria-label="Move up">▲</button><span></span>
+        <button type="button" data-hold-key="arrowleft" aria-label="Move left">◀</button><span class="pad-center" aria-hidden="true">◆</span><button type="button" data-hold-key="arrowright" aria-label="Move right">▶</button>
+        <span></span><button type="button" data-hold-key="arrowdown" aria-label="Move down">▼</button><span></span>
+      </div>
+      <div class="touch-actions" role="group" aria-label="Adventure controls">
+        <button id="touch-main" type="button">START RUN</button>
+        <button id="touch-mute" type="button">SOUND ON</button>
+      </div>
+    </section>
+    <div class="display-controls"><button id="text-mode" type="button" aria-pressed="false">C64 TEXT · T</button> <button id="graphics-mode" type="button" aria-pressed="false">C64 GRAPHICS · G</button></div>
+    <p>Move: arrows / WASD · Collect all eight treasures · Avoid the bear · M mute · T text mode · G remaster graphics</p>
+    <figure class="box-art" aria-label="Forest Run Commodore 64 box-cover artwork">
+      <img src="assets/forest-run-box-art.png" alt="1980s-style woodland game cover: a young explorer races from a large bear toward treasure beneath the title Forest Run, with a Commodore 64 banner." width="1024" height="1536" loading="lazy" decoding="async">
+    </figure>
+    <a href="../index.html">← Collection</a>
+  </main>
+  <script src="../remaster-sprites.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

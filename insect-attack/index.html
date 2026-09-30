@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Insect Attack</title>
+  <script>if (new URLSearchParams(location.search).has("embed")) document.documentElement.classList.add("embedded");</script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,19 +13,33 @@
       <canvas id="game" width="320" height="200" aria-label="Insect Attack game"></canvas>
       <canvas id="modern-text" width="1280" height="800" aria-hidden="true"></canvas>
     </div>
-    <div class="display-controls"><button id="text-mode" type="button" aria-pressed="false">C64 TEXT · T</button></div>
-    <p>Move: arrows / WASD · Spray: Space / Z · Pause: P · Mute: M · T text mode</p>
+    <section class="touch-controls" aria-label="Touchscreen game controls">
+      <div class="touch-pad" role="group" aria-label="Move helicopter">
+        <span></span><button type="button" data-hold-key="arrowup" aria-label="Fly up">▲</button><span></span>
+        <button type="button" data-hold-key="arrowleft" aria-label="Fly left">◀</button><span class="pad-center" aria-hidden="true">✦</span><button type="button" data-hold-key="arrowright" aria-label="Fly right">▶</button>
+        <span></span><button type="button" data-hold-key="arrowdown" aria-label="Fly down">▼</button><span></span>
+      </div>
+      <div class="touch-actions" role="group" aria-label="Flight controls">
+        <button class="spray-button" type="button" data-hold-key=" ">HOLD TO SPRAY</button>
+        <button id="touch-main" type="button">START WAVE</button>
+        <button id="touch-instructions" type="button">BRIEFING</button>
+        <button id="touch-pause" type="button">PAUSE</button>
+        <button id="touch-mute" type="button">SOUND ON</button>
+      </div>
+    </section>
+    <div class="display-controls"><button id="text-mode" type="button" aria-pressed="false">C64 TEXT · T</button> <button id="graphics-mode" type="button" aria-pressed="false">C64 GRAPHICS · G</button></div>
+    <p>Move: arrows / WASD · Spray: Space / Z · Pause: P · Mute: M · T text mode · G remaster graphics</p>
     <section class="notebook-story" aria-labelledby="notebook-story-title">
       <h2 id="notebook-story-title">THE NOTEBOOK STORY</h2>
       <p>You are the pilot of a crop-spraying helicopter in Kansas, fighting the little insects that make farming so difficult. But now, over your radio you hear that a problem in the chemicals department at the nearest fertilization distributor has caused a very strange effect on the bugs. The little pests have mutated into huge bugs the size of your helicopter!</p>
       <p>You quickly go to the chemicals department and ask them what is going on. They tell you they have 3 helicopters equipped with a special poison made into a spray. Having only a short time to concoct the super-powerful bug spray, it isn’t very effective. It only works when you hold it on them for a long time, but barely enough time to get out of the bugs’ way!</p>
       <p>You, being undaunted, take off in the first of these copters ready to make the biggest notch in the bug infestation you can.</p>
     </section>
-    <figure class="box-art" aria-label="Insect Attack game cover art">
-      <img src="assets/insect-attack-box-art.png" alt="A crop-spraying helicopter battles gigantic mutated hornets over Kansas fields at sunset." width="1024" height="1536" loading="lazy" decoding="async">
-      <figcaption><strong>INSECT ATTACK</strong><span>ARCADE-STYLE MUTANT BUG MAYHEM · ORIGINAL COVER ART</span></figcaption>
+    <figure class="box-art" aria-label="Insect Attack Commodore 64 box-cover artwork">
+      <img src="assets/insect-attack-box-art.png" alt="1980s-style arcade game cover: a crop-spraying helicopter attacks giant mutant insects over Kansas beneath the title Insect Attack, with a Commodore 64 banner." width="1024" height="1536" loading="lazy" decoding="async">
     </figure>
   </main>
+  <script src="../remaster-sprites.js"></script>
   <script src="game.js"></script>
 </body>
 </html>

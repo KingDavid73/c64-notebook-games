@@ -20,8 +20,11 @@ a{color:#e2b36b}
 .notebook-story summary{color:#e2b36b;cursor:pointer}
 .notebook-story .story-continuation{margin-top:16px}
 .notebook-story .story-continuation p:last-child{margin-bottom:0}
-.box-art{width:min(100%,390px);margin:30px auto 26px;border:8px ridge #956b49;background:#150d20;box-shadow:0 0 0 3px #09060b,0 14px 36px #0008}
+.box-art{width:min(100%,390px);margin:30px auto 26px}
 .box-art img{display:block;width:100%;height:auto;aspect-ratio:2/3;object-fit:cover}
-.box-art figcaption{display:grid;gap:5px;padding:12px 10px 14px;color:#e5b65f;font-size:clamp(10px,2vw,13px);letter-spacing:.08em}
-.box-art figcaption strong{font-size:1.5em}
-.box-art figcaption span{color:#d8bda7;font-size:.75em}
+.embedded body{display:block;min-height:0}.embedded main{width:100%;max-width:none;padding:0;margin:0}.embedded .game-screen{border:0;box-shadow:none}.embedded .notebook-story,.embedded .box-art,.embedded .help,.embedded main>a,.embedded .display-controls{display:none}
+@media(min-width:701px) and (pointer:fine){.embedded .game-screen{height:100vh;aspect-ratio:auto}}
+.touch-controls{display:none}
+@media(max-width:720px),(pointer:coarse){.touch-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;gap:14px;margin:12px 0;padding:12px;border:1px solid #956b49;background:#1d1225}.touch-pad{display:grid;grid-template-columns:repeat(3,54px);grid-template-rows:repeat(3,50px);justify-content:center;align-items:center;gap:4px}.touch-pad button,.touch-actions button,.touch-group button{min-width:48px;min-height:48px;padding:7px;font-size:12px;touch-action:manipulation;user-select:none;-webkit-user-select:none}.touch-pad .pad-center{display:grid;place-items:center;color:#956b49}.touch-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.touch-actions .touch-primary{grid-column:1/-1;min-height:54px;background:#49304b;color:#ffe5ab;font-weight:bold}.touch-group{display:none;grid-column:1/-1;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.touch-group button{display:flex;justify-content:center;align-items:center;gap:6px}.touch-group button span{font-size:16px}.touch-group button:last-child:nth-child(odd){grid-column:1/-1}body[data-game-mode="explore"] .touch-explore,body[data-game-mode="combat"] .touch-combat,body[data-game-mode="dragonChoice"] .touch-choice{display:grid}}
+@media(max-width:420px){.touch-controls{gap:8px;padding:8px}.touch-pad{grid-template-columns:repeat(3,46px);grid-template-rows:repeat(3,46px)}.touch-actions{grid-template-columns:1fr}.touch-group{grid-template-columns:1fr}}
+@media(max-width:700px),(pointer:coarse){.embedded .display-controls{display:block}}

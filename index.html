@@ -1,1 +1,58 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Michael King's C64 Notebook Games</title><link rel="stylesheet" href="collection.css"></head><body><main><header><p class="eyebrow">RECOVERED FROM THE ORIGINAL NOTEBOOKS</p><h1>MICHAEL KING'S<br><span>C64 GAME PROJECTS</span></h1><p>Playable modern reconstructions preserving the stories, systems, sprites, and wonderfully ambitious logic of the handwritten designs.</p></header><section class="grid"><a class="card yellow" href="insect-attack/index.html"><b>01</b><h2>INSECT ATTACK</h2><p>Defend Kansas farmland from enormous mutated insects in a crop-spraying helicopter.</p><i>PLAY ARCADE</i></a><a class="card red" href="doximodius-rpg/index.html"><b>02</b><h2>DOXIMODIUS</h2><p>Sir Bedivere and the bloodthirsty sword Dracobrane descend into a dragon's hoard.</p><i>PLAY RPG</i></a><a class="card green" href="forest-rescue/index.html"><b>03</b><h2>FOREST RUN</h2><p>Cross a living forest of rocks, logs, birds, trees—and one unpredictable bear.</p><i>PLAY ACTION</i></a><a class="card blue" href="c64-utility-suite/index.html"><b>04</b><h2>UTILITY SUITE</h2><p>Mike's planned disk, character, sprite, sound, game, and educational tools.</p><i>EXPLORE NOTES</i></a></section><footer>BUILT FROM MICHAEL KING'S HANDWRITTEN COMMODORE 64 DESIGNS</footer></main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#201c21">
+  <title>Michael King's C64 Notebook Games</title>
+  <link rel="stylesheet" href="collection.css">
+</head>
+<body>
+  <main id="collection" class="collection">
+    <header class="intro">
+      <p class="eyebrow">RECOVERED FROM THE ORIGINAL NOTEBOOKS</p>
+      <h1>Michael King's <span>C64 game projects</span></h1>
+      <p>Four handwritten ideas, ready to explore. Choose a disk to load a game or read its story.</p>
+    </header>
+
+    <section id="desk-scene" class="desk-scene" aria-label="Commodore 64 game collection">
+      <div class="disk-station">
+        <div class="station-heading"><span>DISK LIBRARY</span><span>01—04</span></div>
+        <p class="station-hint">Click or tap a disk to select it. Use the arrows to browse.</p>
+        <div class="selected-info" aria-live="polite">
+          <p class="selected-heading"><span id="selected-number">DISK 01</span> / <span id="selected-type">ARCADE</span></p>
+          <h2 id="selected-title">INSECT ATTACK</h2>
+          <p id="selected-description">Defend Kansas farmland from enormous mutated insects in a crop-spraying helicopter.</p>
+          <div class="disk-actions"><button id="play-disk" class="primary-action" type="button">▶ PLAY DISK</button><a href="#disk-details">READ DETAILS ↓</a></div>
+        </div>
+        <div class="disk-holder" role="group" aria-label="Game disks">
+          <button class="floppy" type="button" data-disk="3" aria-pressed="false" aria-label="Select Utility Suite disk"><span class="floppy-top"><span class="floppy-slot"></span></span><span class="floppy-label"><small>04 / SOFTWARE</small><strong>UTILITY SUITE</strong></span><span class="floppy-notch"></span></button>
+          <button class="floppy" type="button" data-disk="2" aria-pressed="false" aria-label="Select Forest Run disk"><span class="floppy-top"><span class="floppy-slot"></span></span><span class="floppy-label"><small>03 / ACTION</small><strong>FOREST RUN</strong></span><span class="floppy-notch"></span></button>
+          <button class="floppy" type="button" data-disk="1" aria-pressed="false" aria-label="Select Doximodius disk"><span class="floppy-top"><span class="floppy-slot"></span></span><span class="floppy-label"><small>02 / ADVENTURE</small><strong>DOXIMODIUS</strong></span><span class="floppy-notch"></span></button>
+          <button class="floppy is-selected" type="button" data-disk="0" aria-pressed="true" aria-label="Select Insect Attack disk"><span class="floppy-top"><span class="floppy-slot"></span></span><span class="floppy-label"><small>01 / ARCADE</small><strong>INSECT ATTACK</strong></span><span class="floppy-notch"></span></button>
+        </div>
+        <div class="browse-controls" role="group" aria-label="Browse disks"><button id="previous-disk" type="button" aria-label="Previous disk">◀ PREV</button><span id="disk-counter" aria-live="polite">01 / 04</span><button id="next-disk" type="button" aria-label="Next disk">NEXT ▶</button></div>
+      </div>
+
+      <div class="computer-setup" aria-hidden="true">
+        <img class="hardware-photo" src="assets/c64-desk.png" alt="" width="1536" height="1024">
+        <div class="crt-screen" id="crt-screen"><div class="crt-content"><p>**** COMMODORE 64 BASIC V2 ****</p><p>64K RAM SYSTEM 38911 BASIC BYTES FREE</p><p class="crt-spacer">READY.</p><p id="crt-command">LOAD "INSECT ATTACK",8,1</p><p id="crt-status">PRESS PLAY TO LOAD <span class="cursor">■</span></p></div></div>
+        <div class="screen-bezel" aria-hidden="true"><span class="bezel-top"></span><span class="bezel-left"></span><span class="bezel-right"></span><span class="bezel-bottom"></span></div>
+      </div>
+    </section>
+
+    <section id="disk-details" class="disk-details" aria-labelledby="detail-title">
+      <div class="detail-cover-wrap"><img id="detail-cover" src="insect-attack/assets/insect-attack-box-art.png" alt="Insect Attack cover art" width="1024" height="1536" loading="lazy"></div>
+      <div class="detail-copy"><p class="eyebrow" id="detail-category">01 / ARCADE</p><h2 id="detail-title">INSECT ATTACK</h2><p id="detail-description">Defend Kansas farmland from enormous mutated insects in a crop-spraying helicopter.</p><p id="detail-story"></p><p id="detail-controls"></p><a id="direct-link" href="insect-attack/index.html">OPEN THIS GAME'S OWN PAGE ↗</a></div>
+    </section>
+    <footer><nav aria-label="Direct game links"><a href="insect-attack/index.html">INSECT ATTACK</a><a href="doximodius-rpg/index.html">DOXIMODIUS</a><a href="forest-rescue/index.html">FOREST RUN</a><a href="c64-utility-suite/index.html">UTILITY SUITE</a></nav><span>BUILT FROM MICHAEL KING'S HANDWRITTEN COMMODORE 64 DESIGNS</span></footer>
+  </main>
+
+  <section id="play-view" class="play-view" hidden aria-label="Game player">
+    <div class="play-toolbar"><button id="close-play" type="button">← DISK LIBRARY</button><strong id="play-title">INSECT ATTACK</strong><button id="play-text-mode" type="button" title="Press T in the game for high-resolution text">T · HIGH RESOLUTION</button><button id="play-graphics-mode" type="button" title="Press G in the game for updated graphics">G · UPDATED GRAPHICS</button><a id="play-direct-link" href="insect-attack/index.html" target="_blank" rel="noopener">OPEN DIRECT PAGE ↗</a></div>
+    <div class="play-stage"><div class="play-hardware"><img src="assets/c64-desk.png" alt="" width="1536" height="1024"><div class="play-screen"><iframe id="game-frame" title="Selected C64 game"></iframe></div><div class="screen-bezel" aria-hidden="true"><span class="bezel-top"></span><span class="bezel-left"></span><span class="bezel-right"></span><span class="bezel-bottom"></span></div></div></div>
+  </section>
+  <p id="loading-announcement" class="sr-only" role="status" aria-live="polite"></p>
+  <script src="collection.js"></script>
+</body>
+</html>

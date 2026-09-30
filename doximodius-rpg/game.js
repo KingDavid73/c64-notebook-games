@@ -21,14 +21,22 @@ const roomEncounters={1:"GHOUL",3:"WRAITH",6:"SPECTRE",7:"VAMPIRE"};
 let mode="title",storyPage=0,room=0,hp=18,maxhp=18,str=9,intel=8,wis=8,cha=7,xp=0,level=1,gold=0,potions=2,mana=2,maxMana=3,enemy=null,msg="",visited=new Set([0]),cleared=new Set(),escaped=new Set(),guard=false,selected=0,modernText=false;
 let flags={},audio=null,muted=false,musicStep=0,musicClock=0,lastFrame=performance.now(),padButtons=[],padDirection="",padRepeat=0;
 const textModeButton=document.querySelector("#text-mode");
+const graphicsModeButton=document.querySelector("#graphics-mode"),remasterSprites=new RemasterSprites("assets/remaster-sprites-v2.png"),remasterProps=new RemasterSprites("assets/remaster-props.png",5,5),remasterBackgrounds=new RemasterBackgrounds("assets/remaster-backgrounds.png");
+let remasterGraphics=false;
+function toggleGraphicsMode(){remasterGraphics=!remasterGraphics;graphicsModeButton.textContent=remasterGraphics?"UPDATED GRAPHICS · G":"C64 GRAPHICS · G";graphicsModeButton.setAttribute("aria-pressed",String(remasterGraphics))}
+graphicsModeButton.addEventListener("click",toggleGraphicsMode);
+addEventListener("message",event=>{if(event.data?.type!=="c64-toggle")return;if(event.data.mode==="text")toggleTextMode();if(event.data.mode==="graphics")toggleGraphicsMode()});
 function updateTextModeButton(){textModeButton.textContent=modernText?"MODERN TEXT · T":"C64 TEXT · T";textModeButton.setAttribute("aria-pressed",String(modernText));document.body.classList.toggle("modern-text",modernText)}
 function toggleTextMode(){modernText=!modernText;updateTextModeButton()}
 textModeButton.addEventListener("click",toggleTextMode);updateTextModeButton();
+document.querySelectorAll("[data-touch-key]").forEach(button=>button.addEventListener("click",()=>{wake();press(button.dataset.touchKey)}));
+const touchMute=document.querySelector("#touch-mute"),touchPad=document.querySelector(".touch-pad");
+touchMute.addEventListener("click",()=>{muted=!muted;touchMute.textContent=`SOUND ${muted?"OFF":"ON"}`});
 function wake(){if(!audio)audio=new(window.AudioContext||window.webkitAudioContext)();if(audio.state==="suspended")audio.resume()}
 function tone(f,d=.1,w="square",v=.018,end=f,delay=0){if(!audio||muted)return;const t=audio.currentTime+delay,o=audio.createOscillator(),q=audio.createGain();o.type=w;o.frequency.setValueAtTime(Math.max(25,f),t);o.frequency.exponentialRampToValueAtTime(Math.max(25,end),t+d);q.gain.setValueAtTime(.0001,t);q.gain.exponentialRampToValueAtTime(v,t+.008);q.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(q).connect(audio.destination);o.start(t);o.stop(t+d+.02)}
 function noise(d=.12,v=.025){if(!audio||muted)return;const n=Math.ceil(audio.sampleRate*d),b=audio.createBuffer(1,n,audio.sampleRate),a=b.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n);const s=audio.createBufferSource(),q=audio.createGain();s.buffer=b;q.gain.value=v;s.connect(q).connect(audio.destination);s.start()}
 function sfx(n){if(n==="step")tone(70,.04,"triangle",.012,55);if(n==="spawn")tone(82,.28,"sawtooth",.035,41);if(n==="hit")tone(190,.08,"square",.035,95);if(n==="hurt"){noise(.08,.02);tone(120,.18,"sawtooth",.03,45)}if(n==="cast")[330,440,554,659].forEach((f,i)=>tone(f,.09,"square",.025,f*1.03,i*.035));if(n==="heal")[262,330,392].forEach((f,i)=>tone(f,.12,"triangle",.03,f,i*.07));if(n==="win")[196,247,294,392].forEach((f,i)=>tone(f,.15,"square",.03,f,i*.08));if(n==="death"){noise(.25,.04);tone(130,.5,"sawtooth",.035,30)}}
-addEventListener("keydown",e=>{const k=e.key.toLowerCase();if(["arrowup","arrowdown","arrowleft","arrowright"," ","tab","f3"].includes(k))e.preventDefault();wake();if(k==="m"){muted=!muted;return}if(k==="t"){toggleTextMode();return}press(k)});
+addEventListener("keydown",e=>{const k=e.key.toLowerCase();if(["arrowup","arrowdown","arrowleft","arrowright"," ","tab","f3"].includes(k))e.preventDefault();wake();if(k==="m"){muted=!muted;return}if(k==="t"){toggleTextMode();return}if(k==="g"){toggleGraphicsMode();return}press(k)});
 function reset(){room=0;hp=maxhp=18;str=9;intel=8;wis=8;cha=7;xp=0;level=1;gold=0;potions=2;mana=2;maxMana=3;enemy=null;visited=new Set([0]);cleared=new Set();escaped=new Set();flags={};selected=0;storyPage=0;msg=rooms[0].desc;mode="explore"}
 function press(k){
  if(mode==="title"&&(k==="enter"||k===" ")){mode="story";storyPage=0;return}
@@ -126,4 +134,31 @@ function choice(){rect(0,0,320,240,C.ink);text("THE DRAGON IS SLAIN",160,76,C.go
 function ending(){rect(0,0,320,240,C.ink);text(mode==="dead"?"SIR BEDIVERE HAS FALLEN":"THE JOUST IS DONE",160,84,mode==="dead"?C.red:C.gold,16,"center");const lines=mode==="dead"?["THE SWORD WAITS IN DARKNESS.","PRESS ENTER / A TO TRY AGAIN."]:["THE CROWD CHEERS FOR BEDIVERE.","BUT THE SWORD STILL WHISPERS.","'A GOOD KNIGHT MUST MASTER ME.'","THE QUEST IS COMPLETE."];lines.forEach((s,i)=>text(s,160,116+i*17,C.paper,8,"center"));if(mode==="dead")text("PRESS ENTER / A",160,184,C.white,8,"center")}
 function music(dt){if(!audio||muted)return;musicClock-=dt;if(musicClock>0)return;const lead=[220,262,330,294,220,196,247,294,165,196,247,220,147,165,196,247],bass=[55,55,65,65,49,49,55,55],f=lead[musicStep%lead.length],b=bass[Math.floor(musicStep/2)%bass.length];tone(f,.15,"square",.011);tone(f*(musicStep%4===3?1.5:1.25),.055,"square",.006);if(musicStep%2===0)tone(b,.38,"triangle",.018);if(musicStep%4===2)noise(.035,.006);musicStep++;musicClock=.19}
 function gamepadFrame(dt){if(!navigator.getGamepads)return;const pad=[...navigator.getGamepads()].find(p=>p&&p.connected);if(!pad){padButtons=[];padDirection="";padRepeat=0;return}const pressed=i=>!!pad.buttons[i]?.pressed;let dir="";if(pressed(12))dir="arrowup";else if(pressed(13))dir="arrowdown";else if(pressed(14))dir="arrowleft";else if(pressed(15))dir="arrowright";else{const ax=pad.axes[0]||0,ay=pad.axes[1]||0;if(Math.abs(ax)>.55||Math.abs(ay)>.55)dir=Math.abs(ax)>Math.abs(ay)?(ax<0?"arrowleft":"arrowright"):(ay<0?"arrowup":"arrowdown")}padRepeat-=dt;if(dir&&mode==="explore"&&(dir!==padDirection||padRepeat<=0)){wake();press(dir);padRepeat=.23}if(!dir)padRepeat=0;padDirection=dir;const now=pad.buttons.map(b=>!!b.pressed),just=i=>now[i]&&!padButtons[i];if(just(0)){wake();press("enter")}if(just(1)){wake();if(mode==="dragonChoice")press("s");else if(mode==="explore")press("tab");else if(mode==="combat")press("b")}if(just(2)){wake();if(mode==="explore")press("i");else if(mode==="combat")press("c")}if(just(3)){wake();if(mode==="explore")press("v");else if(mode==="combat")press("p")}if(just(4)){wake();if(mode==="explore")press("r");else if(mode==="combat")press("e")}if(just(5)){wake();press("f3")}padButtons=now}
-function draw(now=performance.now()){const dt=Math.min(.05,(now-lastFrame)/1000);lastFrame=now;gamepadFrame(dt);music(dt);if(modernText)modernCtx.clearRect(0,0,320,240);rect(0,0,320,240,C.ink);if(mode==="title")title();else if(mode==="story")story();else if(mode==="dead"||mode==="win")ending();else if(mode==="dragonChoice")choice();else{scene();hud()}requestAnimationFrame(draw)}draw();
+const c64Hero=hero,c64Monster=monster,c64PropIcon=propIcon,c64Scene=scene;
+hero=function(x,y,s=2){if(!remasterGraphics||!remasterSprites.draw(ctx,0,x-3,y-5,22,30))c64Hero(x,y,s)};
+monster=function(m,x,y,s=2){
+  if(!remasterGraphics){c64Monster(m,x,y,s);return}
+  const tile=({DOXIMODIUS:1,GARETH:6,WRAITH:2,SPECTRE:3,GHOUL:4,VAMPIRE:5})[m.name]??4;
+  if(!remasterSprites.draw(ctx,tile,x-3,y-5,tile===1?48:24,tile===1?39:30))c64Monster(m,x,y,s);
+};
+const propTiles={pack:0,tracks:1,cairn:2,pit:3,crystal:4,runes:5,waystone:6,shade:7,innkeeper:8,throne:9,seal:10,door:11,record:12,mirror:13,shield:14,coins:15,hoard:16,sword:17,dragon:18,gareth:19};
+propIcon=function(p){
+  if(!remasterGraphics||!remasterProps.ready){c64PropIcon(p);return}
+  const x=p.x,y=p.y,selectedProp=target()===p,tile=propTiles[p.id];
+  if(selectedProp){ctx.strokeStyle=C.gold;ctx.strokeRect(x-16,y-18,33,36)}
+  if(tile!==undefined)remasterProps.draw(ctx,tile,x-10,y-14,21,22);
+  rect(x-22,y+14,44,11,C.panel);
+  fitText(p.name.slice(0,11),x,y+22,selectedProp?C.gold:C.white,5,42,"center");
+};
+scene=function(){
+  if(!remasterGraphics||!remasterBackgrounds.ready){c64Scene();return}
+  frame(5,27,220,151);
+  const backdrop=[0,0,0,1,2,2,2,3,3,2][room];
+  remasterBackgrounds.draw(ctx,backdrop,11,33,208,139);
+  rect(11,33,208,139,"#130c1e44");
+  hero(31,102,2);
+  for(const prop of roomProps())propIcon(prop);
+  if(enemy)monster(enemy,145,72,2);
+  drawExits();
+};
+function draw(now=performance.now()){const dt=Math.min(.05,(now-lastFrame)/1000);lastFrame=now;gamepadFrame(dt);music(dt);document.body.dataset.gameMode=mode;touchPad.style.display=mode==="explore"?"grid":"none";document.querySelector("#touch-primary").textContent=({title:"START ADVENTURE",story:"CONTINUE",explore:"USE / ENTER",combat:"ATTACK",dragonChoice:"RIDE TO CAMELOT",dead:"TRY AGAIN",win:"CONTINUE"})[mode]||"CONTINUE";touchMute.textContent=`SOUND ${muted?"OFF":"ON"}`;if(modernText)modernCtx.clearRect(0,0,320,240);rect(0,0,320,240,C.ink);if(mode==="title")title();else if(mode==="story")story();else if(mode==="dead"||mode==="win")ending();else if(mode==="dragonChoice")choice();else{scene();hud()}requestAnimationFrame(draw)}draw();

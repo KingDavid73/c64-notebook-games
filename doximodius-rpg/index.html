@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Doximodius</title>
+  <script>if (new URLSearchParams(location.search).has("embed")) document.documentElement.classList.add("embedded");</script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,8 +13,37 @@
       <canvas id="game" width="320" height="240" aria-label="Doximodius fantasy adventure game"></canvas>
       <canvas id="modern-text" width="1280" height="960" aria-hidden="true"></canvas>
     </div>
+    <section class="touch-controls" id="touch-controls" aria-label="Touchscreen game controls">
+      <div class="touch-pad" role="group" aria-label="Move Bedivere">
+        <span></span><button type="button" data-touch-key="arrowup" aria-label="Move north">▲</button><span></span>
+        <button type="button" data-touch-key="arrowleft" aria-label="Move west">◀</button><span class="pad-center" aria-hidden="true">◆</span><button type="button" data-touch-key="arrowright" aria-label="Move east">▶</button>
+        <span></span><button type="button" data-touch-key="arrowdown" aria-label="Move south">▼</button><span></span>
+      </div>
+      <div class="touch-actions">
+        <button class="touch-primary" id="touch-primary" type="button" data-touch-key="enter">USE</button>
+        <div class="touch-group touch-explore" role="group" aria-label="Exploration actions">
+          <button type="button" data-touch-key="i"><span aria-hidden="true">◉</span> LOOK</button>
+          <button type="button" data-touch-key="tab"><span aria-hidden="true">↻</span> NEXT TARGET</button>
+          <button type="button" data-touch-key="v"><span aria-hidden="true">▣</span> PACK</button>
+          <button type="button" data-touch-key="r"><span aria-hidden="true">♥</span> REST</button>
+          <button type="button" data-touch-key="f3"><span aria-hidden="true">↯</span> RESCUE SCROLL</button>
+        </div>
+        <div class="touch-group touch-combat" role="group" aria-label="Combat actions">
+          <button type="button" data-touch-key="c"><span aria-hidden="true">✧</span> CAST SPELL</button>
+          <button type="button" data-touch-key="b"><span aria-hidden="true">▱</span> BRACE</button>
+          <button type="button" data-touch-key="e"><span aria-hidden="true">↗</span> EVADE</button>
+          <button type="button" data-touch-key="p"><span aria-hidden="true">♥</span> POTION</button>
+          <button type="button" data-touch-key="f3"><span aria-hidden="true">↯</span> RESCUE SCROLL</button>
+        </div>
+        <div class="touch-group touch-choice" role="group" aria-label="Choose Bedivere's fate">
+          <button type="button" data-touch-key="s">SEAL THE SWORD</button>
+        </div>
+        <button class="touch-sound" id="touch-mute" type="button">SOUND ON</button>
+      </div>
+    </section>
     <div class="display-controls">
       <button id="text-mode" type="button">C64 TEXT · T</button>
+      <button id="graphics-mode" type="button" aria-pressed="false">C64 GRAPHICS · G</button>
     </div>
     <p class="help">Explore: arrows/WASD or D-pad travel · Enter/E/A use · Tab/B next target · I/X inspect · V/Y pack · R/LB rest · F3/RB rescue · M sound. Fight: Enter/F/A attack · C/X spell · B/PAD-B brace · E/LB evade · P/Y potion.</p>
     <section class="notebook-story" aria-labelledby="notebook-story-title">
@@ -37,12 +67,12 @@
         </div>
       </details>
     </section>
-    <figure class="box-art" aria-label="Doximodius fantasy game cover art">
-      <img src="assets/doximodius-box-art.png" alt="Sir Bedivere raises a glowing sword against the enormous red-gold dragon Doximodius in a jewel-filled cavern." width="1024" height="1536" loading="lazy" decoding="async">
-      <figcaption><strong>DOXIMODIUS</strong><span>THE SWORD BENEATH THE HILLS · 1980s-INSPIRED COVER ART</span></figcaption>
+    <figure class="box-art" aria-label="Doximodius Commodore 64 box-cover artwork">
+      <img src="assets/doximodius-box-art.png" alt="1980s-style fantasy game cover: Sir Bedivere faces the enormous red-gold dragon Doximodius beneath the title The Sword Beneath the Hills, with a Commodore 64 banner." width="1024" height="1536" loading="lazy" decoding="async">
     </figure>
     <a href="../index.html">← Collection</a>
   </main>
+  <script src="../remaster-sprites.js"></script>
   <script src="game.js"></script>
 </body>
 </html>
