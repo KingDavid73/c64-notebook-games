@@ -87,7 +87,7 @@ function openPlayer() {
   const disk = disks[selected];
   view = "playing";
   $("play-title").textContent = disk.title;
-  $("play-graphics-mode").hidden = selected === 3;
+  $("play-graphics-mode").hidden = selected !== 1;
   $("play-text-mode").hidden = selected === 3;
   $("play-direct-link").href = disk.url;
   gameFrame.title = `${disk.title} game and controls`;
