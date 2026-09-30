@@ -1,3 +1,15 @@
+(() => {
+const deskScene = document.querySelector(".desk-scene");
+const firstDisk = document.querySelector(".floppy");
+const supportsEnhancedView = Boolean(
+  window.CSS?.supports?.("display", "grid") &&
+  window.matchMedia &&
+  deskScene && firstDisk &&
+  getComputedStyle(deskScene).getPropertyValue("--disk-browser-ready").trim() === "1" &&
+  getComputedStyle(firstDisk).position === "absolute"
+);
+if (!supportsEnhancedView) return;
+
 const disks = [
   {
     title: "INSECT ATTACK", type: "ARCADE", url: "insect-attack/index.html", cover: "insect-attack/assets/insect-attack-box-art.png",
@@ -149,3 +161,8 @@ document.addEventListener("keydown", event => {
 });
 
 chooseDisk(0);
+deskScene.removeAttribute("hidden");
+$("disk-details").removeAttribute("hidden");
+document.querySelector(".collection>footer").removeAttribute("hidden");
+document.body.classList.add("is-enhanced");
+})();
